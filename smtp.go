@@ -78,15 +78,6 @@ func (d *Dialer) Dial() (SendCloser, error) {
 		}
 	}
 
-	if !d.SSL {
-		if ok, _ := c.Extension("STARTTLS"); ok {
-			if err := c.StartTLS(d.tlsConfig()); err != nil {
-				c.Close()
-				return nil, err
-			}
-		}
-	}
-
 	if d.Auth == nil && d.Username != "" {
 		if ok, auths := c.Extension("AUTH"); ok {
 			if strings.Contains(auths, "CRAM-MD5") {
